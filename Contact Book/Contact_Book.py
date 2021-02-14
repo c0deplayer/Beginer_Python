@@ -50,7 +50,7 @@ def contact_book(choice):
         name = input("Please enter the name you wish to delete: ")
         if name in contacts:
             confirm = input("Are you sure you want to delete this contact? [y/n] ")
-            if confirm.lower() in ['y', 'yes', 'cum']:
+            if confirm.lower() in ['y', 'yes', 't']:
                 contacts.pop(name, None)
                 print("The contacts list has been updated")
         else:
@@ -66,7 +66,7 @@ def contact_book(choice):
         contact_list()
 
 
-def well_cum():
+def welcome():
     load_file()
     while True:
         print('''
@@ -90,4 +90,4 @@ def well_cum():
 
 
 if __name__ == '__main__':
-    well_cum()
+    welcome()

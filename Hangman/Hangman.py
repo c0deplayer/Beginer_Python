@@ -55,9 +55,9 @@ def board(correct_letters, wrong_letters, secret_word):
 
     blanks = "_" * len(secret_word)
 
-    for i, item in enumerate(secret_word):
-        if item in correct_letters:
-            blanks = blanks[:i] + item + blanks[i + 1:]
+    for i, letter in enumerate(secret_word):
+        if letter in correct_letters:
+            blanks = blanks[:i] + letter + blanks[i + 1:]
 
     if len(wrong_letters) != len(Hangman_pics) - 1:
         for letter in blanks:
@@ -94,7 +94,7 @@ def play():
             correct_letters += guess
             print(correct_letters)
             win = 1
-            for i, item in enumerate(secret_word):
+            for i, _ in enumerate(secret_word):
                 if secret_word[i] not in correct_letters:
                     win = 0
             if win:
