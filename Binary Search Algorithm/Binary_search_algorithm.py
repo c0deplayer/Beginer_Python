@@ -7,12 +7,15 @@ def random_list():
     return random.sample(range(0, 101, 2), 40)   # Returns a list of 40 randoms numbers
 
 
-def searching(number, array):
+def searching(number, array):   # Returns either index of the number or -1 for the number not found
     start = 0
     end = len(array)
+    step = 1
 
     while start <= end:
         mid = (start + end) // 2
+        print(f"Searching for {number}, step {step}: {array[start:end + 1]}")
+        step += 1
 
         if number == array[mid]:
             return mid
@@ -31,6 +34,7 @@ def main():
     +==================================================================+
       > The position of the number in the list will be displayed
       > If the number is not in the list, the index number will be -1
+      > REMEMBER: Index begins with 0
     ''')
     while True:
         array = random_list()
