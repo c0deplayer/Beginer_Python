@@ -21,15 +21,17 @@ def searching(number, array):
             end = mid - 1
         else:
             start = mid + 1
-    return "Number not found"
+    return -1
 
 
 def main():
     print('''
-    =================================
-         Binary Search Algorithm
-    =================================
-     ''')
+    +==================================================================+
+                     Welcome to Binary Search Algorithm
+    +==================================================================+
+      > The position of the number in the list will be displayed
+      > If the number is not in the list, the index number will be -1
+    ''')
     while True:
         array = random_list()
         number = input("Enter a number between <0, 100> ('q' to leave the program)\n")
