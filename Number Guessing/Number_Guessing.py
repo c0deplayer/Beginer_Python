@@ -5,94 +5,52 @@ import random
 
 class Game:
 
-    def __init__(self, choice, name):
-        self.name = name
-        self.score = generated_score(choice)
-        self.target = random_number(choice)
+    def __init__(self, choice):
+        self.target = random.randint(0, 20 ** int(choice))
         self.guess = None
+        self.hints = 0
 
-    def lower_score(self):
-        print("Wrong answer!\n")
-        self.score -= 1
-
-    def play(self):
-        while self.score > 0:
+    def play(self, nick):
+        target = self.target
+        while self.hints < 10:
             try:
                 self.guess = int(input("\nYour guess: "))
-                if self.guess == self.target:
+                self.hints += 1
+
+                if self.guess == target:
                     break
-                self.lower_score()
-                self.hint()
+
+                if self.guess < target:
+                    print("Your number is less than the generated one")
+                else:
+                    print("Your number is grater than the generated one")
             except ValueError:
-                print(f"{self.name}, enter the number")
-        self.win_or_lose()
-
-    def win_or_lose(self):
-        name, score = self.name, self.score
-        if score > 0:
-            print(f'''
-            -----------------------------
-            |        YOU WIN !!!        |
-            -----------------------------
-            >  Nick: {name}         
-            >  Your score: {score}
-            ''')
+                print("Please, enter the number")
+        if self.guess == target:
+            print(f"Congratulations {nick}! You guessed the number in {self.hints} guesses")
         else:
-            print(f'''
-            -----------------------------
-            |       GAME OVER !!!       |
-            -----------------------------
-            >  Nick: {name}
-            >  Secret number: {self.target}
-            ''')
-
-    def hint(self):
-        print(f'''\t\tHints:
-        The number given is too {'small' if self.guess < self.target else 'high'}''')
-
-
-def welcome_message():
-    print('''
-       Howdy!
-       Before starting the mini-game, could you enter your nickname :?
-       (Also, this project is obviously poorly made >.<)
-       ''')
-
-
-def random_number(choice):
-    return random.randint(0, 20 ** int(choice))
-
-
-def generated_score(choice):
-    return 10 * int(choice)
-
-
-def menu():
-    print('''
-    -------------------------------------------
-    |       Number Guessing (mini-game)       |
-    -------------------------------------------
-
-        1. A number between 0 to 20
-        2. A number between 0 to 400
-        3. A number between 0 to 8000
-    ''')
+            print(f"Sorry, the number I generated is {target}")
 
 
 def main():
-    welcome_message()
-    name = input("\t")
-    print("\n" * 100)
+    nick = input("Hewwo! Please, enter your nickname ^w^\n")
     while True:
-        menu()
-        choice = input("Choose one of the available option: ")
+        print('''
+        -------------------------------------------
+        |       Number Guessing (mini-game)       |
+        -------------------------------------------
+
+            1. Easy
+            2. Medium
+            3. Hard
+        ''')
+        choice = input("Type the number to choose difficulty ('q' to leave the game): ")
+        if choice.lower() in ['q', 'quit', 'exit']:
+            print(f"Goodbye, {nick}")
+
         if choice in ['1', '2', '3']:
-            game = Game(choice, name)
-            game.play()
-            play_again = input("Do you want to play again? [y/n] ")
-            if play_again.lower() not in ['y', 'yes', 'ok']:
-                print(f"Goodbye, {game.name}!")
-                break
+            game = Game(choice)
+            game.play(nick)
         else:
             print("Please, try again")
 
