@@ -7,7 +7,7 @@ import io
 contacts = {}
 
 
-def load_file():
+def load_file():   # Loads the file if available otherwise creates an empty json file
     global contacts
     if os.path.isfile('contacts.json') and os.access('contacts.json', os.R_OK):
         with open('contacts.json', 'r') as file:
@@ -19,12 +19,12 @@ def load_file():
             ujson.dump({}, file)
 
 
-def save_file():
+def save_file():   # Saves changes to the file
     with open('contacts.json', 'w') as file:
         ujson.dump(contacts, file, sort_keys=True)
 
 
-def contact_list():
+def contact_list():   # Shows contact list if dictionary is not empty
     if bool(contacts):
         print('''
         +================+
@@ -66,7 +66,7 @@ def contact_book(choice):
         contact_list()
 
 
-def welcome():
+def welcome():   # Main menu
     load_file()
     while True:
         print('''

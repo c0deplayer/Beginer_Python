@@ -48,7 +48,7 @@ word = 'anxiety baboon badger bat bear beaver camel cat clam cobra cougar \
        trout turkey turtle weasel whale wolf wombat zebra'.split()
 
 
-def board(correct_letters, wrong_letters, secret_word):
+def board(correct_letters, wrong_letters, secret_word):   # Displays board with guessed words
     print(Hangman_pics[len(wrong_letters)])
     print()
 
@@ -64,12 +64,12 @@ def board(correct_letters, wrong_letters, secret_word):
         print("\n")
 
 
-def random_word():
+def random_word():   # Returns a random word from list
     word_index = random.randint(0, len(word) - 1)
     return word[word_index]
 
 
-def guessing(entered_letters):
+def guessing(entered_letters):   # It's guessing time
     while True:
         guess = input("Enter your guess: ").lower()
         if len(guess) != 1:
@@ -82,7 +82,7 @@ def guessing(entered_letters):
             return guess
 
 
-def play():
+def play():   # It's playing time
     secret_word = random_word()
     correct_letters = ''
     wrong_letters = ''
@@ -120,7 +120,7 @@ def play():
                 break
 
 
-def menu():
+def menu():  # Menu?
     while True:
         print('''
         --------------
