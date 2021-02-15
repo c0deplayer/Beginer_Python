@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 04.02.2021
-# ToDo: Improve code, catch ValueError (try...expect???), better hint and score system, class or functions?
 import random
 
 

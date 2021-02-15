@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 09.02.2021
-# ToDo: Improve, improve, improve...
 import random
 
 Hangman_pics = ['''

@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 03.02.21
-# ToDo: Improve code, welcome message, create new template form
 
 template_form = ''' 
 The Titanic was a {} ship that could
@@ -42,7 +41,7 @@ blanks = [
 ]
 
 
-def get_user_input():  # Function taking user input and adds answers to the list
+def get_user_input():  # Takes user input and adds answers to the list
     answers = []
     for blank in blanks:
         ans = ""
@@ -54,7 +53,7 @@ def get_user_input():  # Function taking user input and adds answers to the list
     end(answers)
 
 
-def end(answers):  # Function showing completed template and waits for the feedback
+def end(answers):  # Shows completed template and waits for the feedback
     print(template_form.format(*answers))  # '*' -> more than one value
     feedback = input("Was it interesting enough? [y/n] ")
     if feedback.lower() == 'y':

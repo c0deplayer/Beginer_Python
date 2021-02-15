@@ -1,9 +1,9 @@
 # Author: CodePlayer
 # Date: 12.02.2021
-# ToDo: Improve code, more functionality(?)
 import ujson
 import os
 import io
+
 contacts = {}
 
 

@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 06.02.2021
-# ToDO: Depends on how complex code I want to do
 import random
 
 dice_image = ['''
@@ -33,14 +32,14 @@ dice_image = ['''
 [ 0       0 ]
 [ 0       0 ]
 [ 0       0 ]
-[ - - - - - ]''']  # List storing the 'image' of the dice
+[ - - - - - ]''']  # Stores the 'image' of the dice
 
 
-def generating_dice():  # Function returning dice value
+def generating_dice():  # Returns dice value
     return random.randint(0, 5)
 
 
-def menu():  # Function showing the generated dice value in a nice form
+def menu():  # Shows the generated dice value in a nice form
     while True:
         print("Throwing a dice...")
         dice_throw = generating_dice()
