@@ -3,11 +3,11 @@
 import random
 
 
-def random_list():
+def number_list():
     return random.sample(range(0, 101), 30)   # Returns a list of 30 randoms numbers
 
 
-def searching(number, array):   # Returns either index of the number or -1 for the number not found
+def algorithm(number, array):   # Returns either index of the number or -1 for the number not found
     start = 0
     end = len(array)
     step = 1
@@ -37,8 +37,8 @@ def main():
       > REMEMBER: Index begins with 0
     ''')
     while True:
-        array = random_list()
-        number = input("Enter a number between <0, 100> ('q' to leave the program)\n")
+        array = number_list()
+        number = input("\nEnter a number between <0, 100> ('q' to leave the program)\n")
 
         if number.lower() in ['q', 'quit', 'exit']:
             print("Goodbye!")
@@ -47,7 +47,7 @@ def main():
         if int(number) not in range(0, 101):
             print("You entered a number outside the range!")
         else:
-            print(f"Index of {number}: {searching(int(number), sorted(array))}")
+            print(f"Index of {number}: {algorithm(int(number), sorted(array))}")
 
 
 if __name__ == '__main__':
