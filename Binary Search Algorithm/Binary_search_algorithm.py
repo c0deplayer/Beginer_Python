@@ -4,7 +4,7 @@ import random
 
 
 def random_list():
-    return random.sample(range(0, 101, 2), 40)   # Returns a list of 40 randoms numbers
+    return random.sample(range(0, 101), 30)   # Returns a list of 30 randoms numbers
 
 
 def searching(number, array):   # Returns either index of the number or -1 for the number not found
