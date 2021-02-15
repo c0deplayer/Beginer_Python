@@ -4,7 +4,7 @@ import random
 
 
 def random_list():
-    return random.sample(range(0, 101), 50)
+    return random.sample(range(0, 101, 2), 40)
 
 
 def searching(number, array):
@@ -27,7 +27,6 @@ def searching(number, array):
 def main():
     while True:
         array = random_list()
-        print(array)
         number = int(input("Enter a number between <0, 100>\n"))
         print(f"Index of {number}: {searching(number, sorted(array))}")
         again = input("Do you want to continue? [y/n] ")
