@@ -48,33 +48,32 @@ word = 'anxiety baboon badger bat bear beaver camel cat clam cobra cougar \
        trout turkey turtle weasel whale wolf wombat zebra'.split()
 
 
-def board(correct_letters, wrong_letters, secret_word):   # Displays board with guessed words
-    print(Hangman_pics[len(wrong_letters)])
+def board(letters_correct, letters_wrong, secret_word):   # Displays board with guessed words
+    print(Hangman_pics[len(letters_wrong)])
     print()
 
     blanks = "_" * len(secret_word)
 
     for i, letter in enumerate(secret_word):
-        if letter in correct_letters:
+        if letter in letters_correct:
             blanks = blanks[:i] + letter + blanks[i + 1:]
 
-    if len(wrong_letters) != len(Hangman_pics) - 1:
+    if len(letters_wrong) != len(Hangman_pics) - 1:
         for letter in blanks:
             print(letter, end=" ")
         print("\n")
 
 
-def random_word():   # Returns a random word from list
-    word_index = random.randint(0, len(word) - 1)
-    return word[word_index]
+def random_index():   # Returns a random index for word[]
+    return random.randint(0, len(word) - 1)
 
 
-def guessing(entered_letters):   # It's guessing time
+def guessing(letters_entered):   # It's guessing time
     while True:
         guess = input("Enter your guess: ").lower()
         if len(guess) != 1:
             print("Please enter a single letter")
-        elif guess in entered_letters:
+        elif guess in letters_entered:
             print("You have already guessed this letter. Please, try again ")
         elif guess not in 'abcdefghijklmnoprstuvwxyz':
             print("Please enter only letters")
@@ -83,37 +82,37 @@ def guessing(entered_letters):   # It's guessing time
 
 
 def play():   # It's playing time
-    secret_word = random_word()
-    correct_letters = ''
-    wrong_letters = ''
+    secret_word = word[random_index()]
+    letters_correct = ''
+    letters_wrong = ''
     while True:
-        board(correct_letters, wrong_letters, secret_word)
-        guess = guessing(correct_letters + wrong_letters)
+        board(letters_correct, letters_wrong, secret_word)
+        guess = guessing(letters_correct + letters_wrong)
         if guess in secret_word:
-            correct_letters += guess
-            print(correct_letters)
+            letters_correct += guess
+            print(letters_correct)
             win = 1
             for i, _ in enumerate(secret_word):
-                if secret_word[i] not in correct_letters:
+                if secret_word[i] not in letters_correct:
                     win = 0
             if win:
                 print(f'''
                 ====================================
                          CONGRATULATIONS!!!
-                 > Correct guesses: {len(correct_letters)}
-                 > Wrong guesses: {len(wrong_letters)}
+                 > Correct guesses: {len(letters_correct)}
+                 > Wrong guesses: {len(letters_wrong)}
                 ====================================\n
                 ''')
                 break
         else:
-            wrong_letters += guess
-            if len(wrong_letters) == len(Hangman_pics) - 1:
-                board(correct_letters, wrong_letters, secret_word)
+            letters_wrong += guess
+            if len(letters_wrong) == len(Hangman_pics) - 1:
+                board(letters_correct, letters_wrong, secret_word)
                 print(f'''
                 ====================================
                             GAME OVER!!!
-                 > Correct guesses: {len(correct_letters)}
-                 > Wrong guesses: {len(wrong_letters)}
+                 > Correct guesses: {len(letters_correct)}
+                 > Wrong guesses: {len(letters_wrong)}
                  > Secret word: {secret_word}
                 ====================================\n
                 ''')
