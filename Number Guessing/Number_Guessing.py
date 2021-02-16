@@ -23,7 +23,7 @@ class Game:
     def play(self):
         target = self.target
         print(f"The number was drawn from the interval <0, {self.highest_number}>")
-        while self.guess_taken < 5:
+        while self.guess_taken < 8:
             if not self.guessing():
                 continue
 
@@ -57,6 +57,7 @@ def main():
         choice = input("Type the number to choose difficulty ('q' to leave the game): ")
         if choice.lower() in ['q', 'quit', 'exit']:
             print(f"Goodbye, {nick}")
+            break
 
         if choice == '1':
             game_easy = Game(25, nick)
