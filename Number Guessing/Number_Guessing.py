@@ -14,7 +14,7 @@ class Game:
 
     def guessing(self):
         try:
-            self.guess = int(input("\nYour guess: "))
+            self.guess = int(input("Your guess: "))
         except ValueError:
             print(f"{self.nick}, enter the number")
             return False
@@ -22,7 +22,7 @@ class Game:
 
     def play(self):
         target = self.target
-        print(f"The number was drawn from the interval <0, {self.highest_number}>")
+        print(f"\nThe number was drawn from the interval <0, {self.highest_number}>")
         while self.guess_taken < 8:
             if not self.guessing():
                 continue
@@ -33,28 +33,42 @@ class Game:
                 break
 
             if self.guess < target:
-                print("Your number is less than the generated one")
+                print(f"{self.guess} < {'#' * len(str(target))}")
             else:
-                print("Your number is grater than the generated one")
+                print(f"{self.guess} > {'#' * len(str(target))}")
         if self.guess == target:
-            print(f"Congratulations, {self.nick}! You guessed the number in {self.guess_taken} guesses")
+            print(f'''
+            ============================
+                 CONGRATULATIONS!!!
+            ============================
+              > Nick: {self.nick}
+              > Number of guessess: {self.guess_taken}
+            ''')
         else:
-            print(f"Sorry, the number I generated is {target}")
+            print(f'''
+            ========================
+                  GAME OVER!!!
+            ========================
+              > Nick: {self.nick}
+              > Number: {target}
+            ''')
+        input("Enter anything to continue")
 
 
 def main():
     nick = input("Hewwo! Please, enter your nickname ^w^\n")
+    print()
     while True:
         print('''
-        -------------------------------------------
-        |       Number Guessing (mini-game)       |
-        -------------------------------------------
+        =======================================
+              Number Guessing (mini-game)       
+        =======================================
 
             1. Easy
             2. Medium
             3. Hard
         ''')
-        choice = input("Type the number to choose difficulty ('q' to leave the game): ")
+        choice = input("Enter a number to choose difficulty or 'q' to leave the mini-game\n")
         if choice.lower() in ['q', 'quit', 'exit']:
             print(f"Goodbye, {nick}")
             break
