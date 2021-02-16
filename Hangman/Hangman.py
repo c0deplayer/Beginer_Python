@@ -90,10 +90,9 @@ def play():   # It's playing time
         guess = guessing(letters_correct + letters_wrong)
         if guess in secret_word:
             letters_correct += guess
-            print(letters_correct)
             win = 1
-            for i, _ in enumerate(secret_word):
-                if secret_word[i] not in letters_correct:
+            for _, letter in enumerate(secret_word):
+                if letter not in letters_correct:
                     win = 0
             if win:
                 print(f'''
@@ -101,7 +100,7 @@ def play():   # It's playing time
                          CONGRATULATIONS!!!
                  > Correct guesses: {len(letters_correct)}
                  > Wrong guesses: {len(letters_wrong)}
-                ====================================\n
+                ====================================
                 ''')
                 break
         else:
@@ -114,21 +113,21 @@ def play():   # It's playing time
                  > Correct guesses: {len(letters_correct)}
                  > Wrong guesses: {len(letters_wrong)}
                  > Secret word: {secret_word}
-                ====================================\n
+                ====================================
                 ''')
                 break
 
 
 def menu():  # Menu?
+    print('''
+    ===============
+        Hangman  
+    ===============
+    ''')
     while True:
-        print('''
-        --------------
-        |   Hangman  |
-        --------------
-        ''')
         play()
-        play_again = input("Do you want to play again? [y/n] ")
-        if play_again.lower() not in ['y', 'yes', 'ok']:
+        play_again = input("Do you want to play again? [y/n] ").lower()
+        if play_again not in ['y', 'yes', 'ok']:
             print("Have a good day/night")
             break
 
