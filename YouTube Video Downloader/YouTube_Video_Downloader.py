@@ -6,6 +6,13 @@ import os
 from pytube import YouTube
 
 
+def download_audio(yt):
+    file_name = input("\nWhat should the downloaded audio be called?\n")
+    print("Downloading audio...")
+    yt.streams.filter(mime_type="audio/mp4").first().download(filename=file_name)
+    print("Done!!")
+
+
 def download_video(yt, resolution):
     print('''
                               +==============+
@@ -47,9 +54,9 @@ def clearing():
 def main():
     while True:
         print('''
-        ========================================================
-             Welcome to Youtube Video Downloader (Alpha!!!)
-        ========================================================
+        =======================================================
+             Welcome to Youtube Video Downloader (Beta!!!)
+        =======================================================
         
             1. Download video
             2. Download audio
@@ -67,7 +74,7 @@ def main():
             resolution = input("Specify the resolution you want to download (max for now. 1080p): ")
             download_video(yt, resolution)
         elif choice == '2':
-            print("WIP")
+            download_audio(yt)
         else:
             print("Invalid options!\nPlease, try again")
 
