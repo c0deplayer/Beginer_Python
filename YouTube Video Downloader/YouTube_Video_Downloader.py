@@ -7,7 +7,7 @@ from pytube import YouTube
 
 
 def download_audio(yt):
-    file_name = input("\nWhat should the downloaded audio be called?\n")
+    file_name = input("\nWhat should the downloaded audio file be called?\n")
     print("Downloading audio...")
     yt.streams.filter(mime_type="audio/mp4").first().download(filename=file_name)
     print("Done!!")
@@ -51,6 +51,15 @@ def clearing():
     print("Done!!!")
 
 
+def get_url():
+    while True:
+        link = input("Paste (or enter) the link to the YouTube video\n")
+        if 'youtube' in link:
+            return YouTube(link)
+        else:
+            print("This is not a link to a YouTube video!\nPlease try again")
+
+
 def main():
     while True:
         print('''
@@ -67,9 +76,8 @@ def main():
             print("Goodbye!")
             break
 
-        link = input("Paste (or enter) the link to the YouTube video\n")
-        yt = YouTube(link)
-        print(f"Video title: {yt.title}")
+        yt = get_url()
+        print(f"Title: {yt.title}")
         if choice == '1':
             resolution = input("Specify the resolution you want to download (max for now. 1080p): ")
             download_video(yt, resolution)
