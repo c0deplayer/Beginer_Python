@@ -1,16 +1,15 @@
 # Author: CodePlayer
 # Date: 17.02.2021
 # IMPORTANT: You need to install ffmpeg for the audio to video merging to take place!
+from pytube import YouTube
 import ffmpeg
 import pathlib
-from pytube import YouTube
 
 
 def download_audio(yt):
     file_name = input("\nWhat should the downloaded audio file be called?\n")
     print("Downloading audio...")
     yt.streams.filter(mime_type="audio/mp4").first().download(filename=file_name)
-    print("Done!!!")
 
 
 def download_video(yt, resolution):
@@ -32,16 +31,12 @@ def download_video(yt, resolution):
     yt.streams.filter(mime_type="audio/mp4").first().download(filename='temp_a')
     file_audio = ffmpeg.input('temp_a.mp4')
     file_name = input("\nWhat should the downloaded file be called?\n") + '.mp4'
-    merging(file_video, file_audio, file_name)
-    clearing()
+    processing(file_video, file_audio, file_name)
 
 
-def merging(video, audio, name):
+def processing(video, audio, name):
     print("Merging...")
     ffmpeg.concat(video, audio, v=1, a=1).output(name).run()
-
-
-def clearing():
     print("Removal of residual...")
     pathlib.Path('temp_v.mp4').unlink()
     pathlib.Path('temp_a.mp4').unlink()
@@ -74,7 +69,7 @@ def main():
             break
 
         yt = get_url()
-        print(f"Title: {yt.title}")
+        print(f"Title: {yt.title} \nAuthor: {yt.author}")
         if choice == '1':
             resolution = input("Specify the resolution you want to download (max for now. 1080p): ")
             download_video(yt, resolution)
