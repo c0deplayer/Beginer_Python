@@ -22,24 +22,29 @@ def download_video(yt, res):
     ''')
     print("Downloading video...")
     try:
-        yt.streams.filter(res=res, mime_type="video/mp4").first().download(filename='temp_v')
+        yt.streams.filter(res=res, mime_type="video/mp4").first().download(output_path='Cache',
+                                                                           filename='temp_v')
     except AttributeError:
         print("The selected resolution is not available\nDownloading the highest resolution...")
-        yt.streams.filter(adaptive=True, mime_type="video/mp4").first().download(filename='temp_v')
-    file_video = ffmpeg.input('temp_v.mp4')
+        yt.streams.filter(adaptive=True, mime_type="video/mp4").first().download(output_path='Cache',
+                                                                                 filename='temp_v')
     print("Downloading audio...")
-    yt.streams.filter(mime_type="audio/mp4").first().download(filename='temp_a')
-    file_audio = ffmpeg.input('temp_a.mp4')
-    file_name = input("\nWhat should the downloaded file be called?\n") + '.mp4'
-    processing(file_video, file_audio, file_name)
+    yt.streams.filter(mime_type="audio/mp4").first().download(output_path='Cache',
+                                                              filename='temp_a')
+    processing()
 
 
-def processing(video, audio, name):
+def processing():
+    name_video = input("\nWhat should the downloaded file be called?\n") + '.mp4'
+    path_video = pathlib.Path("Cache").joinpath("temp_v.mp4")
+    path_audio = pathlib.Path("Cache").joinpath("temp_a.mp4")
+    stream_video = ffmpeg.input(path_video)
+    stream_audio = ffmpeg.input(path_audio)
     print("Merging...")
-    ffmpeg.concat(video, audio, v=1, a=1).output(name).run()
-    print("Removal of residual...")
-    pathlib.Path('temp_v.mp4').unlink()
-    pathlib.Path('temp_a.mp4').unlink()
+    ffmpeg.output(stream_video, stream_audio, name_video).run()
+    print("Removing the cache files...")
+    pathlib.Path(path_video).unlink()
+    pathlib.Path(path_audio).unlink()
     print("Done!!!")
 
 
