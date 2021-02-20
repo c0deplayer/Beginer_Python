@@ -1,0 +1,1 @@
+#### Do not delete this folder! It stores temporary files
