@@ -12,7 +12,7 @@ def download_audio(yt):
     yt.streams.filter(mime_type="audio/mp4").first().download(filename=file_name)
 
 
-def download_video(yt, resolution):
+def download_video(yt, res):
     print('''
                               +==============+
                                 IMPORTANT!!!
@@ -22,7 +22,7 @@ def download_video(yt, resolution):
     ''')
     print("Downloading video...")
     try:
-        yt.streams.filter(res=resolution, mime_type="video/mp4").first().download(filename='temp_v')
+        yt.streams.filter(res=res, mime_type="video/mp4").first().download(filename='temp_v')
     except AttributeError:
         print("The selected resolution is not available\nDownloading the highest resolution...")
         yt.streams.filter(adaptive=True, mime_type="video/mp4").first().download(filename='temp_v')
@@ -41,6 +41,18 @@ def processing(video, audio, name):
     pathlib.Path('temp_v.mp4').unlink()
     pathlib.Path('temp_a.mp4').unlink()
     print("Done!!!")
+
+
+def get_res(yt):
+    global res_list
+    res_list = []
+    for x in yt.streams.filter(adaptive=True):
+        check = x.resolution
+        if (check is None) or (check in res_list):
+            pass
+        else:
+            res_list.append(check)
+    return res_list
 
 
 def get_url():
@@ -71,8 +83,10 @@ def main():
         yt = get_url()
         print(f"Title: {yt.title} \nAuthor: {yt.author}")
         if choice == '1':
-            resolution = input("Specify the resolution you want to download (max for now. 1080p): ")
-            download_video(yt, resolution)
+            print("Available resolutions:")
+            print(*get_res(yt))
+            res = input("Enter the resolution you want to download: ")
+            download_video(yt, res)
         elif choice == '2':
             download_audio(yt)
         else:
