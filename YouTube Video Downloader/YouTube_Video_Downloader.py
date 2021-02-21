@@ -2,7 +2,7 @@
 # Date: 17.02.2021
 # IMPORTANT: You need to install ffmpeg for the audio to video merging to take place!
 from pytube import YouTube
-import ffmpeg
+import convert
 import pathlib
 
 
@@ -31,21 +31,14 @@ def download_video(yt, res):
     print("Downloading audio...")
     yt.streams.filter(mime_type="audio/mp4").first().download(output_path='Cache',
                                                               filename='temp_a')
-    processing()
+    output()
 
 
-def processing():
+def output():
     name_video = input("\nWhat should the downloaded file be called?\n") + '.mp4'
     path_video = pathlib.Path("Cache").joinpath("temp_v.mp4")
     path_audio = pathlib.Path("Cache").joinpath("temp_a.mp4")
-    stream_video = ffmpeg.input(path_video)
-    stream_audio = ffmpeg.input(path_audio)
-    print("Merging...")
-    ffmpeg.output(stream_video, stream_audio, name_video).run()
-    print("Removing the cache files...")
-    pathlib.Path(path_video).unlink()
-    pathlib.Path(path_audio).unlink()
-    print("Done!!!")
+    convert.processing(name_video, path_video, path_audio)
 
 
 def get_res(yt):
