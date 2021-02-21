@@ -22,13 +22,8 @@ def download_video(yt, res):
           Otherwise the video would be without sound (limitations)
     ''')
     print("Downloading video...")
-    try:
-        yt.streams.filter(res=res, mime_type="video/mp4").first().download(output_path='Cache',
-                                                                           filename='temp_v')
-    except AttributeError:
-        print("The selected resolution is not available\nDownloading the highest resolution...")
-        yt.streams.filter(adaptive=True, mime_type="video/mp4").first().download(output_path='Cache',
-                                                                                 filename='temp_v')
+    yt.streams.filter(res=res, mime_type="video/mp4").first().download(output_path='Cache',
+                                                                       filename='temp_v')
     print("Downloading audio...")
     yt.streams.filter(mime_type="audio/mp4").first().download(output_path='Cache',
                                                               filename='temp_a')
@@ -44,13 +39,21 @@ def join_files():
 
 def get_res(yt):
     res_list = []
-    for x in yt.streams.filter(adaptive=True):
+    for x in yt.streams.filter(adaptive=True, file_extension='mp4'):
         check = x.resolution
-        if (check is None) or (check in res_list):
+        if check is None:
             pass
         else:
             res_list.append(check)
-    return res_list
+
+    print("Available resolutions:")
+    print(*res_list)
+    while True:
+        resolution = input("Enter the resolution you want to download: ")
+        if resolution in res_list:
+            return resolution
+
+        print("This resolution is not available")
 
 
 def get_url():
@@ -59,7 +62,7 @@ def get_url():
             link = input("Paste (or enter) the link to the YouTube video\n")
             return YouTube(link)
         except RegexMatchError:
-            print("This is not a link to the YouTube video or is incorrect" 
+            print("This is not a link to the YouTube video or the link is incorrect" 
                   "\nPlease try again")
 
 
@@ -82,9 +85,7 @@ def main():
         yt = get_url()
         print(f"Title: {yt.title} \nAuthor: {yt.author}")
         if choice == '1':
-            print("Available resolutions:")
-            print(*get_res(yt))
-            res = input("Enter the resolution you want to download: ")
+            res = get_res(yt)
             download_video(yt, res)
         elif choice == '2':
             download_audio(yt)
