@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 17.02.2021
-# IMPORTANT: You need to install ffmpeg for the audio to video merging to take place!
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
 import convert
@@ -37,7 +36,8 @@ def join_files():
     convert.processing(name_video, path_video, path_audio)
 
 
-def get_res(yt):
+def show_info(yt):
+    global res_list
     res_list = []
     for x in yt.streams.filter(adaptive=True, file_extension='mp4'):
         check = x.resolution
@@ -46,10 +46,17 @@ def get_res(yt):
         else:
             res_list.append(check)
 
-    print("Available resolutions:")
-    print(*res_list)
+    print(f'''
+    Information:
+    > Title: {yt.title}
+    > Author: {yt.author}
+    > Resolutions: ''', end="")
+    print(*res_list, sep=", ")
+
+
+def get_res(yt):
     while True:
-        resolution = input("Enter the resolution you want to download: ")
+        resolution = input("\nEnter the resolution you want to download: ")
         if resolution in res_list:
             return resolution
 
@@ -62,7 +69,7 @@ def get_url():
             link = input("Paste (or enter) the link to the YouTube video\n")
             return YouTube(link)
         except RegexMatchError:
-            print("This is not a link to the YouTube video or the link is incorrect" 
+            print("This is not a link to the YouTube video or the link is incorrect"
                   "\nPlease try again")
 
 
@@ -82,12 +89,14 @@ def main():
             print("Goodbye!")
             break
 
-        yt = get_url()
-        print(f"Title: {yt.title} \nAuthor: {yt.author}")
         if choice == '1':
+            yt = get_url()
+            show_info(yt)
             res = get_res(yt)
             download_video(yt, res)
         elif choice == '2':
+            yt = get_url()
+            show_info(yt)
             download_audio(yt)
         else:
             print("Invalid options!\nPlease, try again")
