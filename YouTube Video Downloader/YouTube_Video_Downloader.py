@@ -2,17 +2,18 @@
 # Date: 17.02.2021
 from pytube import YouTube
 from pytube.exceptions import RegexMatchError
+from pathlib import Path
 import convert
-import pathlib
+cache = Path("Cache")
 
 
-def download_audio(yt):
-    name_audio = input("\nWhat should the downloaded audio file be called?\n")
-    print("Downloading audio...")
-    yt.streams.filter(mime_type="audio/mp4").first().download(filename=name_audio)
+def check_folder():
+    if not Path.exists(cache):
+        Path(cache).mkdir(parents=True, exist_ok=False)
+        print("Cache folder does not exist or has been deleted \nCreating...")
 
 
-def download_video(yt, res):
+def download_video(yt, resolution, file_ext):
     print('''
                               +==============+
                                 IMPORTANT!!!
@@ -21,27 +22,26 @@ def download_video(yt, res):
           Otherwise the video would be without sound (limitations)
     ''')
     print("Downloading video...")
-    yt.streams.filter(res=res, mime_type="video/mp4").first().download(output_path='Cache',
-                                                                       filename='temp_v')
+    stream = yt.streams.filter(res=resolution, file_extension=file_ext).first()
+    stream.download(output_path=cache, filename='temp_v')
     print("Downloading audio...")
-    yt.streams.filter(mime_type="audio/mp4").first().download(output_path='Cache',
-                                                              filename='temp_a')
-    join_files()
+    stream = yt.streams.filter(file_extension=file_ext, type="audio").first()
+    stream.download(output_path=cache, filename='temp_a')
 
 
-def join_files():
-    name_video = input("\nWhat should the downloaded file be called?\n") + '.mp4'
-    path_video = pathlib.Path("Cache").joinpath("temp_v.mp4")
-    path_audio = pathlib.Path("Cache").joinpath("temp_a.mp4")
+def join_files(file_ext):
+    name_video = input("\nWhat should the downloaded file be called?\n") + f".{file_ext}"
+    path_video = Path(cache).joinpath("temp_v." + file_ext)
+    path_audio = Path(cache).joinpath("temp_a." + file_ext)
     convert.processing(name_video, path_video, path_audio)
 
 
-def show_info(yt):
+def show_info(yt, file_ext):
     global res_list
     res_list = []
-    for x in yt.streams.filter(adaptive=True, file_extension='mp4'):
+    for x in yt.streams.filter(adaptive=True, file_extension=file_ext):
         check = x.resolution
-        if check is None:
+        if (check is None) or (check in res_list):
             pass
         else:
             res_list.append(check)
@@ -54,53 +54,42 @@ def show_info(yt):
     print(*res_list, sep=", ")
 
 
-def get_res(yt):
+def sanitised_input(prompt, exc):
     while True:
-        resolution = input("\nEnter the resolution you want to download: ")
-        if resolution in res_list:
-            return resolution
+        if exc == RegexMatchError:
+            try:
+                value = input(prompt)
+                return YouTube(value)
+            except exc:
+                print("This is not a link to the YouTube video or the link is incorrect")
+        else:
+            value = input(prompt)
+            if value in exc:
+                return value
 
-        print("This resolution is not available")
-
-
-def get_url():
-    while True:
-        try:
-            link = input("Paste (or enter) the link to the YouTube video\n")
-            return YouTube(link)
-        except RegexMatchError:
-            print("This is not a link to the YouTube video or the link is incorrect"
-                  "\nPlease try again")
+            print(f"'{value}' is incorrect option")
 
 
 def main():
     while True:
         print('''
-        =======================================================
-             Welcome to Youtube Video Downloader (Beta!!!)
-        =======================================================
-        
-            1. Download video
-            2. Download audio
-            3. Exit
+        ===================================================
+                Welcome to Youtube Video Downloader
+        ===================================================
         ''')
-        choice = input("Enter one of the available option: ")
-        if choice == '3':
-            print("Goodbye!")
-            break
+        yt = sanitised_input("Paste the link to the YouTube video\n", RegexMatchError)
+        file_ext = sanitised_input("Select the file extension [mp4/webm]: ", ['mp4', 'webm'])
+        show_info(yt, file_ext)
+        resolution = sanitised_input("\nEnter the resolution you want to download: ", res_list)
+        download_video(yt, resolution, file_ext)
+        join_files(file_ext)
 
-        if choice == '1':
-            yt = get_url()
-            show_info(yt)
-            res = get_res(yt)
-            download_video(yt, res)
-        elif choice == '2':
-            yt = get_url()
-            show_info(yt)
-            download_audio(yt)
-        else:
-            print("Invalid options!\nPlease, try again")
+        leave = input("Do you want to leave the program? [y/n] ").lower()
+        if leave in ['y', 'yes']:
+            print("Have a good day/night!")
+            break
 
 
 if __name__ == '__main__':
+    check_folder()
     main()
