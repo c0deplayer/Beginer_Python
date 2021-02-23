@@ -1,7 +1,5 @@
 # Author: CodePlayer
 # Date: 23.02.2021
-import ctypes
-import sys
 from pathlib import Path
 
 host_path = r"C:\Windows\System32\drivers\etc\hosts"
