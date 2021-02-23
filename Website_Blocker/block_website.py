@@ -27,29 +27,33 @@ def save_file():
 
 
 def input_sites():
+    global blocked_sites
     done = 1
     print("Enter either the page to be blocked or 'q' to complete the data entry")
     while done:
-        site = input()
+        site = input("> ")
         if site.lower() in {'q', 'quit', 'stop'}:
             done = 0
         else:
             blocked_sites.append(site)
 
+    blocked_sites = list(filter(str.strip, blocked_sites))
+
 
 def block():
     load_file()
     input_sites()
-    print("\nBlocking sites...")
     with open(host_path, 'r+') as hostfile:
         hosts = hostfile.read()
         for site in blocked_sites:
             if site not in hosts:
                 hostfile.write(f"{redirect} {site}\n")
-    print("Done!!!")
-    save_file()
+    print("\nBlocked websites:")
+    for _, site in enumerate(blocked_sites):
+        print(f"> {site}")
 
-    input("Enter anything to exit\n")
+    save_file()
+    input("\nEnter anything to exit \n> ")
 
 
 if __name__ == '__main__':

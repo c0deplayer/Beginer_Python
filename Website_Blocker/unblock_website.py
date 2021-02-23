@@ -16,7 +16,6 @@ def load_file():
 
 def unblock():
     load_file()
-    print("Unblocking sites...")
     with open(host_path, 'r+') as hostfile:
         hosts = hostfile.readlines()
         hostfile.seek(0)
@@ -24,9 +23,11 @@ def unblock():
             if not any(site in host for site in blocked_sites):
                 hostfile.write(host)
         hostfile.truncate()
-    print("The sites have been unlocked!")
+    print("Unblocked websites:")
+    for _, site in enumerate(blocked_sites):
+        print(f"> {site}")
 
-    input("Enter anything to exit\n")
+    input("\nEnter anything to exit \n> ")
 
 
 if __name__ == '__main__':
