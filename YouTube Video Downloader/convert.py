@@ -10,7 +10,7 @@ def processing(name_video, path_video, path_audio):
     stream_audio = ffmpeg.input(path_audio)
     print("Merging...")
     ffmpeg.output(stream_video, stream_audio, name_video).run()
-    print("Removing the cache files...")
     Path(path_video).unlink()
     Path(path_audio).unlink()
+    print("Removing the cache files...")
     print("Done!!!")
