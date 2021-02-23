@@ -1,7 +1,6 @@
 # Author: CodePlayer
 # Date: 17.02.2021
 from pytube import YouTube
-from pytube.exceptions import RegexMatchError
 from pathlib import Path
 import convert
 cache = Path("Cache")
