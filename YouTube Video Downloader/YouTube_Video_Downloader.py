@@ -30,7 +30,8 @@ def download_video(yt, resolution, file_ext):
 
 
 def join_files(file_ext):
-    name_video = input("\nWhat should the downloaded file be called?\n") + f".{file_ext}"
+    temp = input("\nWhat should the downloaded file be called?\n") + f".{file_ext}"
+    name_video = "".join(x for x in temp if x.isalnum() or x in "._- ")
     path_video = Path(cache).joinpath("temp_v." + file_ext)
     path_audio = Path(cache).joinpath("temp_a." + file_ext)
     convert.processing(name_video, path_video, path_audio)
@@ -54,20 +55,19 @@ def show_info(yt, file_ext):
     print(*res_list, sep=", ")
 
 
-def sanitised_input(prompt, exc):
+def sanitised_input(prompt, condition):
     while True:
-        if exc == RegexMatchError:
+        value = input(prompt)
+        if condition == "youtube":
             try:
-                value = input(prompt)
                 return YouTube(value)
-            except exc:
-                print("This is not a link to the YouTube video or the link is incorrect")
-        else:
-            value = input(prompt)
-            if value in exc:
-                return value
+            except Exception as exc:
+                print(f"Error occurred!!! \n{exc}")
+                continue
 
-            print(f"'{value}' is incorrect option")
+        if value in condition:
+            return value
+        print(f"Invalid input \nPlease, try again")
 
 
 def main():
@@ -77,15 +77,15 @@ def main():
                 Welcome to Youtube Video Downloader
         ===================================================
         ''')
-        yt = sanitised_input("Paste the link to the YouTube video\n", RegexMatchError)
-        file_ext = sanitised_input("Select the file extension [mp4/webm]: ", ['mp4', 'webm'])
+        yt = sanitised_input("Paste the link to the YouTube video\n", "youtube")
+        file_ext = sanitised_input("Select the file extension [mp4/webm]: ", {'mp4', 'webm'})
         show_info(yt, file_ext)
         resolution = sanitised_input("\nEnter the resolution you want to download: ", res_list)
         download_video(yt, resolution, file_ext)
         join_files(file_ext)
 
         leave = input("Do you want to leave the program? [y/n] ").lower()
-        if leave in ['y', 'yes']:
+        if leave in {'y', 'yes'}:
             print("Have a good day/night!")
             break
 
