@@ -1,10 +1,18 @@
 # Author: CodePlayer
 # Date: 23.02.2021
 from pathlib import Path
+import platform
 
-host_path = r"C:\Windows\System32\drivers\etc\hosts"
 blocked_sites = []
 website = Path('website.txt')
+
+
+def h_path():
+    if platform.system() == 'Windows':
+        path = r"C:\Windows\System32\drivers\etc\hosts"
+    elif platform.system() == 'Linux':
+        path = "/etc/hosts"
+    return path
 
 
 def load_file():
@@ -16,7 +24,8 @@ def load_file():
 
 def unblock():
     load_file()
-    with open(host_path, 'r+') as hostfile:
+    path = h_path()
+    with open(path, 'r+') as hostfile:
         hosts = hostfile.readlines()
         hostfile.seek(0)
         for host in hosts:
@@ -27,7 +36,7 @@ def unblock():
     for _, site in enumerate(blocked_sites):
         print(f"> {site}")
 
-    input("\nEnter anything to exit \n> ")
+    input("\nEnter anything to exit\n> ")
 
 
 if __name__ == '__main__':

@@ -1,11 +1,19 @@
 # Author: CodePlayer
 # Date: 23.02.2021
 from pathlib import Path
+import platform
 
 blocked_sites = []
-host_path = r"C:\Windows\System32\drivers\etc\hosts"
 website = Path('website.txt')
 redirect = "127.0.0.1"
+
+
+def h_path():
+    if platform.system() == 'Windows':
+        path = r"C:\Windows\System32\drivers\etc\hosts"
+    elif platform.system() == 'Linux':
+        path = "/etc/hosts"
+    return path
 
 
 def load_file():
@@ -13,7 +21,7 @@ def load_file():
     if Path.is_file(website):
         with open(website, 'r') as f:
             lines = f.read().split('\n')
-            blocked_sites = [l.strip() for l in lines if len(l) > 0]
+            blocked_sites = [line.strip() for line in lines if len(line) > 0]
     else:
         print("File 'website.txt' is missing\nCreating file...")
         with open(website, 'w') as f:
@@ -43,7 +51,8 @@ def input_sites():
 def block():
     load_file()
     input_sites()
-    with open(host_path, 'r+') as hostfile:
+    path = h_path()
+    with open(path, 'r+') as hostfile:
         hosts = hostfile.read()
         for site in blocked_sites:
             if site not in hosts:
@@ -53,7 +62,7 @@ def block():
         print(f"> {site}")
 
     save_file()
-    input("\nEnter anything to exit \n> ")
+    input("\nEnter anything to exit\n> ")
 
 
 if __name__ == '__main__':
