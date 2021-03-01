@@ -1,18 +1,19 @@
 # Author: CodePlayer
 # Date: 17.02.2021
+# IMPORTANT: You need to install ffmpeg-python and pytube
 from pytube import YouTube
 from pathlib import Path
 import convert
 cache = Path("Cache")
 
 
-def check_folder():
+def check_folder():   # If 'Cache' folder doesn't exist, it will be created
     if not Path.exists(cache):
         Path(cache).mkdir(parents=True, exist_ok=False)
         print("Cache folder does not exist or has been deleted \nCreating...")
 
 
-def download_video(yt, resolution, file_ext):
+def download_video(yt, resolution, file_ext):   # Downloads video and audio file
     print('''
                               +==============+
                                 IMPORTANT!!!
@@ -28,7 +29,7 @@ def download_video(yt, resolution, file_ext):
     stream.download(output_path=cache, filename='temp_a')
 
 
-def join_files(file_ext):
+def join_files(file_ext):   # Merges the files
     temp = input("\nWhat should the downloaded file be called?\n") + f".{file_ext}"
     name_video = "".join(x for x in temp if x.isalnum() or x in "._- ")
     path_video = Path(cache).joinpath("temp_v." + file_ext)
@@ -36,7 +37,7 @@ def join_files(file_ext):
     convert.processing(name_video, path_video, path_audio)
 
 
-def show_info(yt, file_ext):
+def show_info(yt, file_ext):   # Shows information about video (title, author, available resolutions)
     global res_list
     res_list = []
     for x in yt.streams.filter(adaptive=True, file_extension=file_ext):
@@ -54,7 +55,7 @@ def show_info(yt, file_ext):
     print(*res_list, sep=", ")
 
 
-def sanitised_input(prompt, condition):
+def sanitised_input(prompt, condition):   # Validates the entered data
     while True:
         value = input(prompt)
         if condition == "youtube":
@@ -69,7 +70,7 @@ def sanitised_input(prompt, condition):
         print(f"Invalid input \nPlease, try again")
 
 
-def main():
+def main():   # Main menu
     while True:
         print('''
         ===================================================

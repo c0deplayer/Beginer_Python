@@ -1,5 +1,6 @@
 # Author: CodePlayer
 # Date: 23.02.2021
+# ADMINISTRATOR PRIVILEGES REQUIRED!!!
 from pathlib import Path
 import platform
 
@@ -8,7 +9,7 @@ website = Path('website.txt')
 redirect = "127.0.0.1"
 
 
-def h_path():
+def h_path():   # Returns the path to the hosts file depending on your system
     if platform.system() == 'Windows':
         path = r"C:\Windows\System32\drivers\etc\hosts"
     elif platform.system() == 'Linux':
@@ -16,7 +17,7 @@ def h_path():
     return path
 
 
-def load_file():
+def load_file():   # Loads/Creates 'website.txt'
     global blocked_sites
     if Path.is_file(website):
         with open(website, 'r') as f:
@@ -28,13 +29,13 @@ def load_file():
             pass
 
 
-def save_file():
+def save_file():   # Saves the file
     with open(website, 'w') as f:
         for site in blocked_sites:
             f.write(f"{site}\n")
 
 
-def input_sites():
+def input_sites():   # Ability to enter websites to block
     global blocked_sites
     done = 1
     print("Enter either the page to be blocked or 'q' to complete the data entry")
@@ -48,7 +49,7 @@ def input_sites():
     blocked_sites = list(filter(str.strip, blocked_sites))
 
 
-def block():
+def block():   # Overwrites the hosts file 
     load_file()
     input_sites()
     path = h_path()

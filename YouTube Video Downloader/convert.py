@@ -1,6 +1,6 @@
 # Author: CodePlayer
 # Date: 21.02.2021
-# IMPORTANT: You need to install ffmpeg for the audio to video merging to take place!
+# IMPORTANT: You need to install ffmpeg-python
 from pathlib import Path
 import ffmpeg
 
