@@ -9,12 +9,12 @@ def number_list():
 
 def algorithm(number, array):   # Returns either index of the number or -1 for the number not found
     start = 0
-    end = len(array)
+    end = len(array) - 1
     step = 1
 
     while start <= end:
         mid = (start + end) // 2
-        print(f"Searching for {number}, step {step}: {array[start:end + 1]}")
+        print(f"Searching for {number}, step {step}: {array[start : end + 1]}")
         step += 1
 
         if number == array[mid]:
