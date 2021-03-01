@@ -4,7 +4,7 @@ import random
 
 
 def number_list():
-    return random.sample(range(0, 101), 30)   # Returns a list of 30 randoms numbers
+    return sorted(random.sample(range(101), 30))   # Returns a list of 30 randoms numbers
 
 
 def algorithm(number, array):   # Returns either index of the number or -1 for the number not found
@@ -38,16 +38,20 @@ def main():
     ''')
     while True:
         array = number_list()
-        number = input("\nEnter a number between <0, 100> ('q' to leave the program)\n")
+        try:
+            number = int(input("\nEnter a number between <0, 100> " 
+                            "or negative numbers to leave the algorythm\n"))
 
-        if number.lower() in ['q', 'quit', 'exit']:
-            print("Goodbye!")
-            break
+            if number < 0:
+                print("Goodbye!")
+                break
 
-        if int(number) not in range(0, 101):
-            print("You entered a number outside the range!")
-        else:
-            print(f"Index of {number}: {algorithm(int(number), sorted(array))}")
+            if number > 100:
+                print("You entered a number outside the range!")
+            else:
+                print(f"Index of {number}: {algorithm(number, array)}")
+        except ValueError:
+            print("Invalid input")
 
 
 if __name__ == '__main__':
