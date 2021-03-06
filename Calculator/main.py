@@ -32,14 +32,14 @@ def sanitised_input(calc):
     if len(calc) == 3:
         if not calc[0].isdigit() or not calc[1].isdigit():
             print("This is not the number!")
-        elif calc[2] not in ops:
+        elif calc[2] not in list(ops)[:5]:
             print("Invalid operator!")
         else:
             value = True
     elif len(calc) == 2:
         if not calc[0].isdigit():
             print("This is not the number!")
-        elif calc[1] not in ops:
+        elif calc[1] not in list(ops)[-1]:
             print("Invalid operator!")
         else:
             value = True
