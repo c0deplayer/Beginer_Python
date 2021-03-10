@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 06.03.2021
-import math
 import operator
 
 
@@ -8,21 +7,42 @@ ops = {
     '+': operator.add,
     '-': operator.sub,
     '/': operator.truediv,
+    '%': operator.mod,
     '*': operator.mul,
-    '^': operator.pow,
-    'sqrt': math.sqrt}
+    '^': operator.pow}
+
+
+def is_digit(y):
+    try:
+        _ = float(y[0])   # ???
+        _ = float(y[1])
+        return True
+    except ValueError:
+        return False
 
 
 def options():
     print('''
-    =================================
-      "+" for addition (2 num)
-      "-" for subtraction (2 num)
-      "/" for division (2 num)
-      "*" for multiplication (2 num)
-      "^" for the power (2 num)
-      "sqrt" for the root (1 num)
-    =================================
+    =========================================
+      "+" for addition
+      "-" for subtraction
+      "/" for division
+      "*" for multiplication
+      "%" for remainder of division
+      "^" for the power and nth root
+    =========================================
+    ''')
+    input("Enter anything to go back... ")
+
+
+def help():
+    print('''
+    ===================================================================
+       Hello :)
+       > Provide the mathematical operation in the following format: 
+          NUM1 NUM2 OPER
+       > Write fractional numbers in decimal form e.g. 1/2 as 0.5
+    ===================================================================
     ''')
     input("Enter anything to go back... ")
 
@@ -30,16 +50,9 @@ def options():
 def sanitised_input(calc):
     value = False
     if len(calc) == 3:
-        if not calc[0].isdigit() or not calc[1].isdigit():
-            print("This is not the number!")
-        elif calc[2] not in list(ops)[:5]:
-            print("Invalid operator!")
-        else:
-            value = True
-    elif len(calc) == 2:
-        if not calc[0].isdigit():
-            print("This is not the number!")
-        elif calc[1] not in list(ops)[-1]:
+        if not is_digit(calc):
+            print("You must enter the nubmers")
+        elif calc[2] not in ops:
             print("Invalid operator!")
         else:
             value = True
@@ -55,7 +68,7 @@ def menu():
            Type:
            "o" to show available operations
            "q" to quit
-           "NUM1 (NUM2) OPERATOR"
+           "h" for help
         +====================================+
         ''')
         choice = input("> ")
@@ -64,19 +77,15 @@ def menu():
             break
         elif choice.lower() == 'o':
             options()
+        elif choice.lower() == 'h':
+            help()
         else:
             calc = [x for x in choice.split(" ")]
             if sanitised_input(calc):
-                if len(calc) == 3:
-                    op_func = ops[calc[2]]
-                    result = op_func(float(calc[0]), float(calc[1]))
+                op_func = ops[calc[2]]
+                result = op_func(float(calc[0]), float(calc[1]))
 
-                    print(f"{calc[0]} {calc[2]} {calc[1]} = {result}")
-                else:
-                    op_func = ops[calc[1]]
-                    result = op_func(float(calc[0]))
-
-                    print(f"{calc[1]}({calc[0]}) = {result}")
+                print(f"{calc[0]} {calc[2]} {calc[1]} = {result}")
 
 
 if __name__ == "__main__":
