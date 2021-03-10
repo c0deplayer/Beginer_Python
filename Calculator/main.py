@@ -23,14 +23,14 @@ def is_digit(y):
 
 def options():
     print('''
-    =========================================
-      "+" for addition
-      "-" for subtraction
-      "/" for division
-      "*" for multiplication
-      "%" for remainder of division
-      "^" for the power and nth root
-    =========================================
+    ===================================
+       "+" for addition
+       "-" for subtraction
+       "/" for division
+       "*" for multiplication
+       "%" for remainder of division
+       "^" for the power and nth root 
+    ====================================
     ''')
     input("Enter anything to go back... ")
 
@@ -66,19 +66,20 @@ def menu():
         print('''
         +====================================+
            Type:
+           "h" for help
            "o" to show available operations
            "q" to quit
-           "h" for help
         +====================================+
         ''')
         choice = input("> ")
         if choice.lower() in {'q', 'quit', 'leave'}:
             print("Goodbye!")
             break
+
+        if choice.lower() == 'h':
+            help()
         elif choice.lower() == 'o':
             options()
-        elif choice.lower() == 'h':
-            help()
         else:
             calc = [x for x in choice.split(" ")]
             if sanitised_input(calc):
