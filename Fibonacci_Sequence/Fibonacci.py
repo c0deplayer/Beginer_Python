@@ -14,9 +14,9 @@ def show(fib, n = None):
 
 def sequence(n):
     fibonacii_list = []
+
     if n:
-        fibonacii_list.append(0)
-        fibonacii_list.append(1)
+        fibonacii_list.extend([0, 1])
         for i in range (2, n + 1):
             fibonacii_list.append(fibonacii_list[i - 1] + fibonacii_list[i - 2])
     elif n == 0:
@@ -32,7 +32,7 @@ def main():
             if not n_max < 0:
                 fib = sequence(n_max)
                 n = int(input("Enter different values to get the corresponding fibonacci sequence, " 
-                        "enter any negative number to exit\n> "))
+                              "enter any negative number to exit\n> "))
                 if n < 0:
                     print("Goodbye")
                     break

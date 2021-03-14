@@ -33,7 +33,7 @@ def main():
             print(f"\n>>>> {generator(choice, lenght)}")
         else:
             print("Invalid option\n")
-        
+
 
 if __name__ == "__main__":
     main()

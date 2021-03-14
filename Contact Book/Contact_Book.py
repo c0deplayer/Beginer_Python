@@ -2,7 +2,6 @@
 # Date: 12.02.2021
 import ujson
 import os
-import io
 
 contacts = {}
 
@@ -15,7 +14,7 @@ def load_file():   # Loads the file if available otherwise creates an empty json
         print("File 'contacts.json' exists and is readable\nLoading...")
     else:
         print("Either file 'contacts.json' is missing or is not readable\nCreating file...")
-        with io.open('contacts.json', 'w') as file:
+        with open('contacts.json', 'w') as file:
             ujson.dump({}, file)
 
 
@@ -25,7 +24,7 @@ def save_file():   # Saves changes to the file
 
 
 def contact_list():   # Shows contact list if dictionary is not empty
-    if bool(contacts):
+    if contacts:
         print('''
         +================+
            Contact List
@@ -61,6 +60,7 @@ def contact_book(choice):
             print(f"\nName: {name}, Number: {contacts[name]}")
         else:
             print("\nThe contact doesn't exist! Returning to main menu")
+            
     if choice in ['1', '2', '3']:
         save_file()
         contact_list()
