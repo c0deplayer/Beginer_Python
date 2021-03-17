@@ -23,10 +23,7 @@ def main():
                 new = path + (name + str(count + 1) + ext)
                 old = path + filename
                 os.rename(old, new)
-
-                if os.path.isfile(new):
-                    success += 1
-
+                success += 1
             except FileExistsError as fee:
                 print(fee)
 
