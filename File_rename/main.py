@@ -1,6 +1,5 @@
 # Author: CodePlayer
 # Date: 16.03.2021
-from multiprocessing.sharedctypes import Value
 import os
 import re
 
@@ -22,7 +21,7 @@ def renaming(path, name, ext):
 def sanitised_input(prompt, regex):
     while True:
         value = input(prompt)
-        if re.search(f"{regex}", value):
+        if re.search(regex, value):
             return value
         print("Invalid input")
 
