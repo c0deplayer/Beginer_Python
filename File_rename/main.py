@@ -19,7 +19,7 @@ def renaming(path, name, ext):
     return renamed_file
 
 
-def sanitized_input(prompt, regex):
+def sanitised_input(prompt, regex):
     while True:
         value = input(prompt)
         if re.search(f"{regex}", value):
@@ -34,14 +34,14 @@ def main():
               Files rename tool       
         +---------------------------+
         ''')
-        path = sanitized_input(
+        path = sanitised_input(
             "Enter the path of the files (e.g. C:\\Screenshots\\Test\\) \n> ",
             r"^[a-zA-Z]:[\\\/](?:[\w]+[\\\/])*([\w]+)\\$")
         lenght_dir = len(os.listdir(path))
         print(f"|  There are {lenght_dir} files in this location  |")
-        name = sanitized_input(
+        name = sanitised_input(
             "Enter the new files name \n> ", r"^[\w\-.][\w\-. ]*$")
-        ext = sanitized_input(
+        ext = sanitised_input(
             "Enter the files extension (e.g. '.txt') \n> ", r"^\.[a-zA-Z0-9]+$")
         print("Renaming files...")
         success = renaming(path, name, ext)
