@@ -1,6 +1,8 @@
 # Author: CodePlayer
 # Date: 16.03.2021
+from multiprocessing.sharedctypes import Value
 import os
+import re
 
 
 def renaming(path, name, ext):
@@ -17,6 +19,14 @@ def renaming(path, name, ext):
     return renamed_file
 
 
+def sanitized_input(prompt, regex):
+    while True:
+        value = input(prompt)
+        if re.search(f"{regex}", value):
+            return value
+        print("Invalid input")
+
+
 def main():
     while True:
         print('''
@@ -24,12 +34,15 @@ def main():
               Files rename tool       
         +---------------------------+
         ''')
-        path = input(
-            "Enter the path of the files (e.g. C:\Screenshots\Test) \n> ") + "\\"
+        path = sanitized_input(
+            "Enter the path of the files (e.g. C:\\Screenshots\\Test\\) \n> ",
+            r"^[a-zA-Z]:[\\\/](?:[\w]+[\\\/])*([\w]+)\\$")
         lenght_dir = len(os.listdir(path))
         print(f"|  There are {lenght_dir} files in this location  |")
-        name = input("Enter the new files name \n> ")
-        ext = "." + input("Enter the files extension (e.g. 'txt') \n> ")
+        name = sanitized_input(
+            "Enter the new files name \n> ", r"^[\w\-.][\w\-. ]*$")
+        ext = sanitized_input(
+            "Enter the files extension (e.g. '.txt') \n> ", r"^\.[a-zA-Z0-9]+$")
         print("Renaming files...")
         success = renaming(path, name, ext)
         print(
