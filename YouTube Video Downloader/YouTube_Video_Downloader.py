@@ -4,6 +4,7 @@
 from pytube import YouTube
 from pathlib import Path
 import convert
+import re
 cache = Path("Cache")
 
 
@@ -30,15 +31,15 @@ def download_video(yt, resolution, file_ext):   # Downloads video and audio file
 
 
 def join_files(file_ext):   # Merges the files
-    temp = input("\nWhat should the downloaded file be called?\n") + f".{file_ext}"
-    name_video = "".join(x for x in temp if x.isalnum() or x in "._- ")
+    name_video = sanitised_input(
+        "\nWhat should the downloaded file be called?\n", r"^[\w\-.]*$") + f".{file_ext}"
     path_video = Path(cache).joinpath("temp_v." + file_ext)
     path_audio = Path(cache).joinpath("temp_a." + file_ext)
     convert.processing(name_video, path_video, path_audio)
 
 
 def show_info(yt, file_ext):   # Shows information about video (title, author, available resolutions)
-    global res_list
+    global res_reg
     res_list = []
     for x in yt.streams.filter(adaptive=True, file_extension=file_ext):
         check = x.resolution
@@ -53,19 +54,13 @@ def show_info(yt, file_ext):   # Shows information about video (title, author, a
     > Author: {yt.author}
     > Resolutions: ''', end="")
     print(*res_list, sep=", ")
+    res_reg = "(" + ")|(".join(res_list) + ")"
 
 
-def sanitised_input(prompt, condition):   # Validates the entered data
+def sanitised_input(prompt, regex):   # Validates the entered data
     while True:
         value = input(prompt)
-        if condition == "youtube":
-            try:
-                return YouTube(value)
-            except Exception as exc:
-                print(f"Error occurred!!! \n{exc}")
-                continue
-
-        if value in condition:
+        if re.match(regex, value):
             return value
         print(f"Invalid input \nPlease, try again")
 
@@ -77,10 +72,13 @@ def main():   # Main menu
                 Welcome to Youtube Video Downloader
         ===================================================
         ''')
-        yt = sanitised_input("Paste the link to the YouTube video\n", "youtube")
-        file_ext = sanitised_input("Select the file extension [mp4/webm]: ", {'mp4', 'webm'})
+        yt = YouTube(sanitised_input("Paste the link to the YouTube video\n",
+                                     r"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]{11})(\S+)?$"))
+        file_ext = sanitised_input(
+            "Select the file extension [mp4/webm]: ", r"(mp4)|(webm)")
         show_info(yt, file_ext)
-        resolution = sanitised_input("\nEnter the resolution you want to download: ", res_list)
+        resolution = sanitised_input(
+            "\nEnter the resolution you want to download: ", res_reg)
         download_video(yt, resolution, file_ext)
         join_files(file_ext)
 
