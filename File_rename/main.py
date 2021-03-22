@@ -41,8 +41,10 @@ def main():
                 "Enter the path of the files (e.g. C:\\Screenshots\\Test) \n> ",
                 r"^[a-zA-Z]:[\\\/](?:[\w]+[\\\/])*([\w]+)$")
             location += "\\"
+            files = [f for f in os.listdir(location)]
+            print(*files, sep="  |  ")
             print(
-                f"|  There are {len(os.listdir(location))} files in this location  |")
+                f"> Elements: {len(files)} <")
             name = sanitised_input(
                 "Enter the new files name \n> ", r"^[\w\-.][\w\-. ]*$")
             ext = sanitised_input(
