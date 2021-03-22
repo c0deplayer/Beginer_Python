@@ -4,13 +4,13 @@ import os
 import re
 
 
-def renaming(path, name, ext, num):
+def renaming(p, name, ext, num):
     renamed_file = 0
 
-    for count, filename in enumerate(os.listdir(path)):
+    for count, filename in enumerate(os.listdir(p)):
         try:
-            new = path + (name + str(count + 1) + ext)
-            old = path + filename
+            new = p + (name + str(count + 1) + ext)
+            old = p + filename
             os.rename(old, new)
             renamed_file += 1
 
@@ -31,18 +31,18 @@ def sanitised_input(prompt, regex):
 
 def main():
     while True:
+        print('''
+        +---------------------------+
+              Files rename tool
+        +---------------------------+
+        ''')
         try:
-            print('''
-            +---------------------------+
-                  Files rename tool       
-            +---------------------------+
-            ''')
-            path = sanitised_input(
+            location = sanitised_input(
                 "Enter the path of the files (e.g. C:\\Screenshots\\Test) \n> ",
                 r"^[a-zA-Z]:[\\\/](?:[\w]+[\\\/])*([\w]+)$")
-            path += "\\"
+            location += "\\"
             print(
-                f"|  There are {len(os.listdir(path))} files in this location  |")
+                f"|  There are {len(os.listdir(location))} files in this location  |")
             name = sanitised_input(
                 "Enter the new files name \n> ", r"^[\w\-.][\w\-. ]*$")
             ext = sanitised_input(
@@ -51,7 +51,7 @@ def main():
             num = int(sanitised_input(
                 "How many files should I rename (alphabetical sorting) \n> ", r"^[1-9]\d*$"))
             print("Renaming files...")
-            success = renaming(path, name, ext, num - 1)
+            success = renaming(location, name, ext, num - 1)
             print(
                 f"\nRenamed files:  Successfully {success}  Failed {num - success}\n")
             cont = input("Do you want to continue [y/n]? ").lower()
