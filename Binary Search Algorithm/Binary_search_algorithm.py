@@ -39,7 +39,7 @@ def main():
     while True:
         array = number_list()
         try:
-            number = int(input("\nEnter a number between <0, 100> " 
+            number = int(input("\nEnter a number between <0, 100> "
                             "or negative numbers to leave the algorythm\n"))
 
             if number < 0:

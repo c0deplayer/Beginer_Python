@@ -2,6 +2,8 @@
 # Date: 09.02.2021
 import random
 
+
+CLEAR = "\033[H\033[J"
 Hangman_pics = ['''
      +---+
          |
@@ -130,6 +132,7 @@ def menu():  # Menu?
         if play_again not in ['y', 'yes', 'ok']:
             print("Have a good day/night")
             break
+        print(CLEAR, end="")
 
 
 if __name__ == '__main__':

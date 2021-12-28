@@ -3,6 +3,9 @@
 import random
 
 
+CLEAR = "\033[H\033[J"
+
+
 class Game:
 
     def __init__(self, target, nick):
@@ -22,7 +25,8 @@ class Game:
 
     def play(self):
         target = self.target
-        print(f"\nThe number was drawn from the interval <0, {self.highest_number}>")
+        print(
+            f"\nThe number was drawn from the interval <0, {self.highest_number}>")
         while self.guess_taken < 8:
             if not self.guessing():
                 continue
@@ -53,6 +57,7 @@ class Game:
               > Number: {target}
             ''')
         input("Enter anything to continue")
+        print(CLEAR, end="")
 
 
 def main():
@@ -68,7 +73,8 @@ def main():
             2. Medium
             3. Hard
         ''')
-        choice = input("Enter a number to choose difficulty or 'q' to leave the mini-game\n")
+        choice = input(
+            "Enter a number to choose difficulty or 'q' to leave the mini-game\n")
         if choice.lower() in ['q', 'quit', 'exit']:
             print(f"Goodbye, {nick}")
             break
